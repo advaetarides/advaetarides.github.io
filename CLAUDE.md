@@ -1,13 +1,9 @@
 # Advaeta Rides — Website
 
-## What This Is
-
-Static website for the Advaeta Rides motorcycle vlog channel. Hosted on GitHub Pages.
-
 ## Links
 
 - **YouTube**: https://www.youtube.com/@AdvaetaRides
-- **Website**: https://advaetarides.github.io (once deployed)
+- **Website**: https://advaetarides.github.io
 
 ## Brand
 
@@ -23,61 +19,135 @@ Static website for the Advaeta Rides motorcycle vlog channel. Hosted on GitHub P
 | Name | Hex | CSS Variable | Use |
 |------|-----|-------------|-----|
 | Black | #0C0C0C | --black | Background |
-| Bronze | #C4944A | --bronze | Headings, buttons, links, accents |
-| Bronze dim | #8B6914 | --bronze-dim | Borders, dates, subtle accents |
-| Teal | #2A7B7B | --teal | Section titles, code blocks, texture |
-| Teal light | #3AA0A0 | --teal-light | Card headings, highlights |
+| Bronze | #C4944A | --bronze | Headings, buttons, accents |
+| Bronze dim | #8B6914 | --bronze-dim | Borders, dates |
+| Teal | #2A7B7B | --teal | Section titles, code |
+| Teal light | #3AA0A0 | --teal-light | Card headings |
 | Cream | #F5E6C8 | --cream | Body text |
-| Muted | #8B7B5E | --muted | Secondary text, nav links |
+| Muted | #8B7B5E | --muted | Secondary text, nav |
 | Dark brown | #2A2015 | --dark-brown | Borders, dividers |
 
 ## Fonts
 
-| Use | Font | CSS Variable |
-|-----|------|-------------|
-| Display/titles | Cinzel Decorative | --font-display |
-| Headings | Cinzel | --font-heading |
-| Body text | Cormorant Garamond | --font-body |
-| Tagline/accent | Uncial Antiqua | --font-accent |
+| Use | Font |
+|-----|------|
+| Display/titles | Cinzel Decorative |
+| Headings | Cinzel |
+| Body text | Cormorant Garamond |
+| Tagline/accent | Uncial Antiqua |
 
 ## Site Structure
 
 ```
 advaetarides.github.io/
-├── index.html                ← Landing page
+├── index.html              ← Landing page
+├── about.html              ← About page
 ├── blog/
-│   ├── index.html            ← Blog listing
-│   ├── three-ts.html         ← Three T's article
-│   └── fits.html             ← FITS article
+│   ├── index.html          ← Blog listing
+│   ├── _template.html      ← Copy this to create new articles
+│   ├── three-ts.html       ← Article
+│   └── fits.html           ← Article
 ├── tools/
-│   ├── index.html            ← Tools listing
-│   └── fits.html             ← FITS interactive calculator
+│   ├── index.html          ← Tools listing
+│   └── fits.html           ← FITS calculator
 ├── vlogs/
-│   └── index.html            ← Vlog index
+│   └── index.html          ← Vlog index with season tabs
 ├── assets/
-│   ├── css/style.css         ← Shared design system
-│   └── images/
-│       ├── logo.png          ← Medallion logo
-│       └── blog/             ← Blog images
+│   ├── css/style.css       ← Shared design system (ALL pages use this)
+│   ├── images/
+│   │   ├── logo.png
+│   │   ├── hero-art.png
+│   │   └── blog/           ← Blog article images
+│   └── thumbnails/         ← Vlog thumbnails
 └── README.md
 ```
 
-## Rules
+## No Build Tools
 
-- All pages use shared CSS: `assets/css/style.css`
-- Every page includes the fog-layer div and consistent nav bar
-- Images auto-style (gold border, shadow) — no manual styling needed
-- Nav links: Home, Tools, Blog, Vlogs
-- No Jekyll build required — pure static HTML
-- Images from vlog production go in `assets/images/blog/`
-- The FITS tool (`tools/fits.html`) has its own dark navy design — intentionally different from the main site
+This is a pure static HTML site. No Jekyll, no Node, no build step. Push HTML files → GitHub Pages serves them. That's it.
 
-## Writing New Content
+## How to Add a New Blog Article
 
-See README.md for article template and publishing instructions.
+### 1. Copy the template
+```bash
+cp blog/_template.html blog/your-article-name.html
+```
+
+### 2. Edit the file
+- Change `<title>` tag
+- Change the date
+- Change `<h1>` title
+- Write content using standard HTML
+
+### 3. Everything auto-styles
+
+The shared CSS (`assets/css/style.css`) handles all styling. Just write HTML:
+
+| You write | It becomes |
+|-----------|-----------|
+| `<h1>` | Large bronze title |
+| `<h2>` | Teal section heading with bottom border |
+| `<h3>` | Smaller bronze heading |
+| `<p>` | Cream body text |
+| `<img>` | Gold-bordered frame with shadow |
+| `<blockquote>` | Teal left border, dark background |
+| `<table>` | Bronze headers, hover-highlighted rows |
+| `<code>` | Teal inline code |
+| `<pre>` | Code block with teal left border |
+| `<a>` | Bronze link, underline on hover |
+| `<hr>` | Bronze gradient divider |
+| `<strong>` | Bright cream emphasis |
+| `<li>` | Bronze bullet/number markers |
+
+No classes needed. No inline styles. Just semantic HTML.
+
+### 4. Add images
+```bash
+# Put image in assets
+cp your-image.png assets/images/blog/
+
+# Reference in article
+<img src="../assets/images/blog/your-image.png" alt="Description">
+```
+Images auto-get: gold border, dark background, shadow. No styling needed.
+
+### 5. Add to blog listing
+
+Open `blog/index.html`, add a card:
+```html
+<a href="your-article-name.html" style="text-decoration:none; border:none;">
+  <div class="framework-card">
+    <h3>Your Article Title</h3>
+    <p>Short description.</p>
+    <small style="color:#8B6914; font-family:var(--font-heading); letter-spacing:2px; font-size:0.65rem;">DATE</small>
+  </div>
+</a>
+```
+
+### 6. Push
+```bash
+git add .
+git commit -m "Add article: Your Title"
+git push
+```
+Live in ~1 minute.
+
+## How to Add a New Vlog Episode
+
+1. Add thumbnail to `assets/thumbnails/vlog-NN.png`
+2. Edit `vlogs/index.html` — add a vlog card in the correct season tab
+3. Link the card to the YouTube video URL
+4. Push
+
+## How to Add a New Tool
+
+1. Create `tools/your-tool.html` (self-contained HTML+CSS+JS)
+2. Add a card in `tools/index.html` linking to it
+3. Tools can have their own visual style (like FITS has dark navy)
+4. Push
 
 ## Related Projects
 
 - Vlog production files: `~/llm-kb/advaetaRides/vlogs/`
-- Vlog production guide: `~/llm-kb/advaetaRides/vlogs/CLAUDE.md`
-- FITS framework source: `~/llm-kb/advaetaRides/vlogs/vlog-03-fits/fits-framework.md`
+- Vlog CLAUDE.md: `~/llm-kb/advaetaRides/vlogs/CLAUDE.md`
+- FITS framework: `~/llm-kb/advaetaRides/vlogs/vlog-03-fits/fits-framework.md`
