@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+._*
+
+# Jekyll build
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+
+# Node (if ever used)
+node_modules/
+
+# Editor
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Thumbnails
+Thumbs.db
+
+# Logs
+*.log
