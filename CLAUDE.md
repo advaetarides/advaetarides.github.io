@@ -4,10 +4,17 @@
 
 Static website for the Advaeta Rides motorcycle vlog channel. Hosted on GitHub Pages.
 
+## Links
+
+- **YouTube**: https://www.youtube.com/@AdvaetaRides
+- **Website**: https://advaetarides.github.io (once deployed)
+
 ## Brand
 
 - **Name**: Advaeta Rides (two words, space between)
 - **Tagline**: "A World of Adventure & Faith in Cog & Carving"
+- **YouTube Description**: "The Journey is the Destination. We don't just count the miles; we make the miles count."
+- **Content**: Cinematic travel vlogs, mindset talks, soulful journeys
 - **Aesthetic**: Explorer, adventurer, steampunk-meets-heritage, carved bronze medallion
 - **NOT**: Tech, blueprint, clinical, modern-minimal
 
