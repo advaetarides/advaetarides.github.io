@@ -6,25 +6,35 @@
 <title>Advaeta Rides — A World of Adventure & Faith in Cog & Carving</title>
 <link rel="stylesheet" href="assets/css/style.css">
 <style>
-  .hero-bg {
+  .hero-art {
     position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: url('assets/images/hero-banner.png') center center / cover no-repeat;
-    mask-image: linear-gradient(180deg, black 0%, black 65%, transparent 95%);
-    -webkit-mask-image: linear-gradient(180deg, black 0%, black 65%, transparent 95%);
+    top: 60px; left: 0;
+    width: 100%;
     z-index: 0;
     pointer-events: none;
+    mask-image: linear-gradient(180deg, black 0%, black 75%, transparent 95%);
+    -webkit-mask-image: linear-gradient(180deg, black 0%, black 75%, transparent 95%);
   }
-  nav { position:relative; z-index:10; background:rgba(12,12,12,0.6); backdrop-filter:blur(8px); }
+  .hero-art img { width:100%; display:block; }
+  nav { position:relative; z-index:10; }
   .hero { position: relative; z-index: 5; }
-  .hero-spacer { height: 420px; }
-  @media (max-width:640px) { .hero-spacer { height: 220px; } }
+  .hero-title { position:relative; z-index:2; text-align:center; padding:10px 20px 0; }
+  .hero-title h1 { text-shadow:0 2px 30px rgba(0,0,0,0.9); }
+  .hero-title .tagline { text-shadow:0 1px 20px rgba(0,0,0,0.9); }
+  .hero-buttons a.btn-primary, .hero-buttons a.btn-secondary {
+    background: rgba(12,12,12,0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .hero-buttons a.btn-secondary { border-color: rgba(196,148,74,0.5); color: #C4944A; }
+  @media (max-width:640px) { .hero-spacer { height: 200px !important; } }
+</style>
 </style>
 </head>
 <body>
 
-<!-- no fog on index — banner image provides the atmosphere -->
+<!-- teal texture behind transparent hero art -->
+<div class="fog-layer"></div>
 
 <nav>
   <div class="nav-left">
@@ -41,8 +51,12 @@
 </nav>
 
 <div class="hero" style="position:relative; overflow:hidden;">
-  <div class="hero-bg"></div>
-  <div class="hero-spacer" style="height:450px;"></div>
+  <div class="hero-art"><img src="assets/images/hero-art.png" alt=""></div>
+  <div class="hero-title">
+    <h1>Advaeta Rides</h1>
+    <p class="tagline" style="font-family:'Uncial Antiqua',serif; font-size:0.95rem; color:#8B7B5E; letter-spacing:3px;">A World of Adventure & Faith in Cog & Carving</p>
+  </div>
+  <div class="hero-spacer" style="height:350px;"></div>
   <div style="position:relative; z-index:2; text-align:center; padding:0 20px 70px;">
     <div class="hero-buttons">
       <a href="tools/" class="btn-primary">Fits Tool →</a>
