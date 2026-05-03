@@ -14,10 +14,22 @@
   .vlog-info h3 { font-family:'Cinzel',serif; font-size:1.1rem; font-weight:900; color:#3AA0A0; margin-bottom:8px; letter-spacing:2px; }
   .vlog-info p { font-size:0.95rem; color:#8B7B5E; line-height:1.7; margin:0 0 10px; }
   .vlog-info small { color:#8B6914; font-family:'Cinzel',serif; letter-spacing:2px; font-size:0.65rem; }
-  .vlog-dimmed { opacity:0.5; pointer-events:none; }
+  .vlog-dimmed { opacity:0.35; pointer-events:none; filter:blur(1px); }
   .yt-banner { text-align:center; margin:0 auto 40px; max-width:720px; padding:0 24px; }
   .yt-banner a { display:inline-block; padding:12px 28px; border:2px solid #C4944A; color:#C4944A; text-decoration:none; font-family:'Cinzel',serif; font-weight:700; font-size:0.75rem; letter-spacing:3px; text-transform:uppercase; transition:all 0.3s; }
   .yt-banner a:hover { background:#C4944A; color:#0C0C0C; }
+
+  /* Season Tabs */
+  .season-tabs { display:flex; justify-content:center; gap:0; margin:0 auto 40px; max-width:720px; padding:0 24px; }
+  .season-tab { flex:1; text-align:center; padding:12px 20px; font-family:'Cinzel',serif; font-size:0.75rem; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:#8B7B5E; border:1px solid #2A2015; cursor:pointer; transition:all 0.3s; background:transparent; }
+  .season-tab:first-child { border-radius:4px 0 0 4px; }
+  .season-tab:last-child { border-radius:0 4px 4px 0; }
+  .season-tab.active { color:#C4944A; border-color:#C4944A; background:rgba(196,148,74,0.08); }
+  .season-tab.disabled { opacity:0.3; cursor:not-allowed; filter:blur(0.5px); }
+  .season-tab:not(.disabled):hover { color:#C4944A; border-color:#C4944A; }
+
+  .season-content { display:none; }
+  .season-content.active { display:block; }
 </style>
 </head>
 <body>
@@ -32,6 +44,7 @@
     <a href="../tools/">Tools</a>
     <a href="../blog/">Blog</a>
     <a href="./">Vlogs</a>
+    <a href="../about.html">About</a>
   </div>
 </nav>
 
@@ -43,36 +56,68 @@
     <a href="https://www.youtube.com/@AdvaetaRides" target="_blank">Subscribe on YouTube ↗</a>
   </div>
 
-  <div class="vlog-grid">
-    <a href="https://www.youtube.com/@AdvaetaRides" target="_blank" class="vlog-card">
-      <img src="../assets/thumbnails/vlog-01.png" alt="Vlog 01" class="vlog-thumb">
-      <div class="vlog-info">
-        <h3>Vlog 01 — The Three T's</h3>
-        <p>How I chose my first motorcycle using Touch, Tussle, and Tilt. A bedroom TED talk, furniture as motorcycle simulators, and four beautiful bikes I had to reject.</p>
-        <small>COMING SOON</small>
-      </div>
-    </a>
+  <div class="season-tabs">
+    <div class="season-tab active" onclick="showSeason(0, this)">Season 0</div>
+    <div class="season-tab disabled">Season 1</div>
+  </div>
 
-    <div class="vlog-card vlog-dimmed">
-      <div style="width:100%; aspect-ratio:16/9; background:#141414;"></div>
-      <div class="vlog-info">
-        <h3>Vlog 02 — The Shortlist</h3>
-        <p>Which bikes survived the Three T's? The reveal.</p>
-        <small>COMING SOON</small>
+  <!-- Season 0 -->
+  <div class="season-content active" id="season-0">
+    <div class="vlog-grid">
+      <a href="https://www.youtube.com/@AdvaetaRides" target="_blank" class="vlog-card">
+        <img src="../assets/thumbnails/vlog-01.png" alt="Vlog 01" class="vlog-thumb">
+        <div class="vlog-info">
+          <h3>Ep 01 — The Three T's</h3>
+          <p>How I chose my first motorcycle using Touch, Tussle, and Tilt. A bedroom TED talk, furniture as motorcycle simulators, and four beautiful bikes I had to reject.</p>
+          <small>COMING SOON</small>
+        </div>
+      </a>
+
+      <div class="vlog-card" style="opacity:0.5; pointer-events:none;">
+        <div style="width:100%; aspect-ratio:16/9; background:#141414;"></div>
+        <div class="vlog-info">
+          <h3>Ep 02 — The Shortlist</h3>
+          <p>Which bikes survived the Three T's? The reveal.</p>
+          <small>COMING SOON</small>
+        </div>
+      </div>
+
+      <div class="vlog-card" style="opacity:0.5; pointer-events:none;">
+        <div style="width:100%; aspect-ratio:16/9; background:#141414;"></div>
+        <div class="vlog-info">
+          <h3>Ep 03 — Does It FITS?</h3>
+          <p>The lifestyle filter. Frequency, Intensity, Terrain, Span — the final test before buying.</p>
+          <small>COMING SOON</small>
+        </div>
       </div>
     </div>
+  </div>
 
-    <div class="vlog-card vlog-dimmed">
-      <div style="width:100%; aspect-ratio:16/9; background:#141414;"></div>
-      <div class="vlog-info">
-        <h3>Vlog 03 — Does It FITS?</h3>
-        <p>The lifestyle filter. Frequency, Intensity, Terrain, Span — the final test before buying.</p>
-        <small>COMING SOON</small>
+  <!-- Season 1 (hidden, blurred placeholder) -->
+  <div class="season-content" id="season-1">
+    <div class="vlog-grid">
+      <div class="vlog-card vlog-dimmed">
+        <div style="width:100%; aspect-ratio:16/9; background:#141414;"></div>
+        <div class="vlog-info">
+          <h3>Season 1</h3>
+          <p>The road begins. Coming after Season 0 wraps.</p>
+          <small>FUTURE</small>
+        </div>
       </div>
     </div>
   </div>
 </main>
 
 <footer><p>Advaeta Rides — The Journey Continues</p></footer>
+
+<script>
+function showSeason(n, el) {
+  if (el.classList.contains('disabled')) return;
+  document.querySelectorAll('.season-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.season-content').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('season-' + n).classList.add('active');
+}
+</script>
 </body>
 </html>
