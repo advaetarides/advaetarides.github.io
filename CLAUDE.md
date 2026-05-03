@@ -146,8 +146,3 @@ Live in ~1 minute.
 3. Tools can have their own visual style (like FITS has dark navy)
 4. Push
 
-## Related Projects
-
-- Vlog production files: `~/llm-kb/advaetaRides/vlogs/`
-- Vlog CLAUDE.md: `~/llm-kb/advaetaRides/vlogs/CLAUDE.md`
-- FITS framework: `~/llm-kb/advaetaRides/vlogs/vlog-03-fits/fits-framework.md`

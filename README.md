@@ -119,7 +119,7 @@ Open `blog/index.html` and add a new card:
 ### 5. Push to GitHub
 
 ```bash
-cd ~/PWORK/AdvaetaRides/advaetarides.github.io
+cd advaetarides.github.io
 git add .
 git commit -m "Add new article: Your Title"
 git push
@@ -153,7 +153,7 @@ The shared CSS (`assets/css/style.css`) auto-styles everything. Just use standar
 2. Rename `preview.html` to `index.html`
 3. Push:
 ```bash
-cd ~/PWORK/AdvaetaRides/advaetarides.github.io
+cd advaetarides.github.io
 git init
 git add .
 git commit -m "Initial site"
