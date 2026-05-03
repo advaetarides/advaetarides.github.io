@@ -5,6 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vlogs — Advaeta Rides</title>
 <link rel="stylesheet" href="../assets/css/style.css">
+<style>
+  .vlog-grid { max-width:720px; margin:0 auto; padding:0 24px 80px; }
+  .vlog-card { border:1px solid rgba(42,123,123,0.15); margin-bottom:24px; background:linear-gradient(135deg,rgba(42,123,123,0.04) 0%,rgba(12,12,12,0.95) 100%); transition:all 0.4s; overflow:hidden; display:block; text-decoration:none; }
+  .vlog-card:hover { border-color:rgba(196,148,74,0.3); transform:translateY(-2px); }
+  .vlog-thumb { width:100%; aspect-ratio:16/9; object-fit:cover; display:block; border-bottom:1px solid rgba(196,148,74,0.1); }
+  .vlog-info { padding:20px 24px; }
+  .vlog-info h3 { font-family:'Cinzel',serif; font-size:1.1rem; font-weight:900; color:#3AA0A0; margin-bottom:8px; letter-spacing:2px; }
+  .vlog-info p { font-size:0.95rem; color:#8B7B5E; line-height:1.7; margin:0 0 10px; }
+  .vlog-info small { color:#8B6914; font-family:'Cinzel',serif; letter-spacing:2px; font-size:0.65rem; }
+  .vlog-dimmed { opacity:0.5; pointer-events:none; }
+  .yt-banner { text-align:center; margin:0 auto 40px; max-width:720px; padding:0 24px; }
+  .yt-banner a { display:inline-block; padding:12px 28px; border:2px solid #C4944A; color:#C4944A; text-decoration:none; font-family:'Cinzel',serif; font-weight:700; font-size:0.75rem; letter-spacing:3px; text-transform:uppercase; transition:all 0.3s; }
+  .yt-banner a:hover { background:#C4944A; color:#0C0C0C; }
+</style>
 </head>
 <body>
 <div class="fog-layer"></div>
@@ -17,31 +31,44 @@
     <a href="../">Home</a>
     <a href="../tools/">Tools</a>
     <a href="../blog/">Blog</a>
-    <a href="#">About</a>
+    <a href="./">Vlogs</a>
   </div>
 </nav>
 
 <main>
   <h1 style="text-align:center; margin-top:60px;">Vlogs</h1>
-  <p style="text-align:center; color:#8B7B5E; font-size:1.1rem; margin-bottom:50px;">The motorcycle journey — one episode at a time.</p>
+  <p style="text-align:center; color:#8B7B5E; font-size:1.1rem; margin-bottom:20px; font-style:italic;">The Journey is the Destination.</p>
 
-  <div class="frameworks">
-    <div class="framework-card">
-      <h3>Vlog 01 — The Three T's</h3>
-      <p>How I chose my first motorcycle using Touch, Tussle, and Tilt. A bedroom TED talk, furniture as motorcycle simulators, and four beautiful bikes I had to reject.</p>
-      <small style="color:#8B6914; font-family:var(--font-heading); letter-spacing:2px; font-size:0.65rem;">COMING SOON</small>
+  <div class="yt-banner">
+    <a href="https://www.youtube.com/@AdvaetaRides" target="_blank">Subscribe on YouTube ↗</a>
+  </div>
+
+  <div class="vlog-grid">
+    <a href="https://www.youtube.com/@AdvaetaRides" target="_blank" class="vlog-card">
+      <img src="../assets/thumbnails/vlog-01.png" alt="Vlog 01" class="vlog-thumb">
+      <div class="vlog-info">
+        <h3>Vlog 01 — The Three T's</h3>
+        <p>How I chose my first motorcycle using Touch, Tussle, and Tilt. A bedroom TED talk, furniture as motorcycle simulators, and four beautiful bikes I had to reject.</p>
+        <small>COMING SOON</small>
+      </div>
+    </a>
+
+    <div class="vlog-card vlog-dimmed">
+      <div style="width:100%; aspect-ratio:16/9; background:#141414;"></div>
+      <div class="vlog-info">
+        <h3>Vlog 02 — The Shortlist</h3>
+        <p>Which bikes survived the Three T's? The reveal.</p>
+        <small>COMING SOON</small>
+      </div>
     </div>
 
-    <div class="framework-card" style="opacity:0.5;">
-      <h3>Vlog 02 — The Shortlist</h3>
-      <p>Which bikes survived the Three T's? The reveal.</p>
-      <small style="color:#8B6914; font-family:var(--font-heading); letter-spacing:2px; font-size:0.65rem;">COMING SOON</small>
-    </div>
-
-    <div class="framework-card" style="opacity:0.5;">
-      <h3>Vlog 03 — Does It FITS?</h3>
-      <p>The lifestyle filter. Frequency, Intensity, Terrain, Span — the final test before buying.</p>
-      <small style="color:#8B6914; font-family:var(--font-heading); letter-spacing:2px; font-size:0.65rem;">COMING SOON</small>
+    <div class="vlog-card vlog-dimmed">
+      <div style="width:100%; aspect-ratio:16/9; background:#141414;"></div>
+      <div class="vlog-info">
+        <h3>Vlog 03 — Does It FITS?</h3>
+        <p>The lifestyle filter. Frequency, Intensity, Terrain, Span — the final test before buying.</p>
+        <small>COMING SOON</small>
+      </div>
     </div>
   </div>
 </main>
