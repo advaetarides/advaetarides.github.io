@@ -1,6 +1,6 @@
 # Advaeta Rides — Website
 
-> A World of Adventure & Faith in Cog & Carving
+> A World of Adventure & Faith in Cogs & Carvings
 
 ## Structure
 
