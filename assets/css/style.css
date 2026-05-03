@@ -416,13 +416,16 @@
   /* ========= FOOTER ========= */
   footer {
     position:relative; z-index:5;
-    text-align:center; padding:40px;
-    border-top:1px solid var(--dark-line);
+    text-align:center; padding:40px 20px;
+    border-top:2px solid transparent;
+    border-image:linear-gradient(90deg, transparent, var(--bronze-dim), var(--teal), var(--bronze-dim), transparent) 1;
+    background:linear-gradient(180deg, transparent 0%, rgba(42,123,123,0.06) 50%, rgba(42,123,123,0.1) 100%);
   }
   footer p {
     font-family:var(--font-heading);
-    font-size:0.6rem; color:var(--dark-brown);
+    font-size:0.7rem; color:var(--muted);
     letter-spacing:4px; text-transform:uppercase;
+    text-shadow:0 1px 8px rgba(0,0,0,0.5);
   }
 
   /* ========= RESPONSIVE ========= */

@@ -6,38 +6,73 @@
 <title>Advaeta Rides — A World of Adventure & Faith in Cog & Carving</title>
 <link rel="stylesheet" href="assets/css/style.css">
 <style>
+  /* Fixed parallax hero image */
   .hero-art {
-    position: absolute;
-    top: 140px; left: 0;
-    width: 100%;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100vh;
     z-index: 0;
     pointer-events: none;
-    mask-image: linear-gradient(180deg, black 0%, black 75%, transparent 95%);
-    -webkit-mask-image: linear-gradient(180deg, black 0%, black 75%, transparent 95%);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 60px;
   }
-  .hero-art img { width:100%; display:block; }
-  nav { position:relative; z-index:10; }
-  .hero { position: relative; z-index: 5; }
-  .hero-title { position:relative; z-index:2; text-align:center; padding:10px 20px 0; }
-  .hero-title h1 { text-shadow:0 2px 30px rgba(0,0,0,0.9); }
-  .hero-title .tagline { text-shadow:0 1px 20px rgba(0,0,0,0.9); }
+  .hero-art img { width: 100%; max-height: 90vh; object-fit: contain; object-position: center top; }
+  .hero-art::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 80% at 50% 45%, transparent 30%, #0C0C0C 75%),
+      linear-gradient(180deg, rgba(12,12,12,0.3) 0%, transparent 20%, transparent 60%, #0C0C0C 95%);
+    pointer-events: none;
+  }
+
+  /* Content scrolls over the fixed image */
+  nav { position: relative; z-index: 10; }
+  .hero {
+    position: relative; z-index: 5;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .hero-title { position: relative; z-index: 2; text-align: center; padding: 5px 20px 0; }
+  .hero-title h1 { text-shadow: 0 2px 30px rgba(0,0,0,0.9), 0 0 60px rgba(0,0,0,0.7); }
+  .hero-title .tagline { text-shadow: 0 1px 20px rgba(0,0,0,0.9); }
+
+  /* hero-fade removed — vignette ::after handles bottom fade */
+
   .hero-buttons a.btn-primary, .hero-buttons a.btn-secondary {
-    background: rgba(12,12,12,0.4);
+    background: rgba(12,12,12,0.5);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
   }
   .hero-buttons a.btn-secondary { border-color: rgba(196,148,74,0.5); color: #C4944A; }
+
+  /* Everything after hero has solid bg so it covers the fixed image */
+  .content-below {
+    position: relative; z-index: 5;
+    background: #0C0C0C;
+  }
+
   @media (max-width:640px) {
-    .hero-spacer { height: 0px !important; }
+    .hero { min-height: auto !important; }
+    .hero-art { position: relative !important; top: 0 !important; height: auto !important; }
+    .hero-art::after { display: none; }
+    .hero-art img { max-height: none !important; mask-image: linear-gradient(180deg, black 0%, black 70%, transparent 100%); -webkit-mask-image: linear-gradient(180deg, black 0%, black 70%, transparent 100%); }
     .hero-title h1 { font-size: 1.5rem !important; letter-spacing: 3px !important; margin-bottom: 4px !important; }
-    .hero-title .tagline { font-size: 0.65rem !important; letter-spacing: 1px !important; margin-bottom: 8px !important; }
+    .hero-title .tagline { font-size: 0.65rem !important; letter-spacing: 1px !important; }
     .hero-title { padding: 0 16px !important; }
-    .hero-art { top: 100px !important; }
     .hero-buttons a.btn-primary, .hero-buttons a.btn-secondary { padding: 10px 20px !important; font-size: 0.65rem !important; letter-spacing: 2px !important; }
     .divider { padding: 10px 0 !important; }
     .frameworks { padding-bottom: 40px !important; }
   }
-</style>
+
+  @media (min-width:1400px) {
+    .hero { min-height: 85vh; }
+  }
 </style>
 </head>
 <body>
@@ -65,14 +100,17 @@
     <h1>Advaeta Rides</h1>
     <p class="tagline" style="font-family:'Uncial Antiqua',serif; font-size:0.95rem; color:#8B7B5E; letter-spacing:3px;">A World of Adventure & Faith in Cog & Carving</p>
   </div>
-  <div class="hero-spacer" style="height:350px;"></div>
-  <div style="position:relative; z-index:2; text-align:center; padding:0 20px 70px;">
+  <div style="flex:1;"></div>
+  <div style="position:relative; z-index:2; text-align:center; padding:0 20px 30px;">
     <div class="hero-buttons">
       <a href="tools/" class="btn-primary">Fits Tool →</a>
       <a href="https://www.youtube.com/@AdvaetaRides" class="btn-secondary" target="_blank">YouTube ↗</a>
     </div>
   </div>
+  <div class="hero-fade"></div>
 </div>
+
+<div class="content-below">
 
 <div class="divider">
   <div class="divider-diamond"></div>
@@ -88,6 +126,8 @@
     <p>Frequency. Intensity. Terrain. Span. Does this bike match how you actually live? The lifestyle fit that stops you buying based on looks.</p>
   </div>
 </div>
+
+</div><!-- /content-below -->
 
 <footer><p>Advaeta Rides — The Journey Continues</p></footer>
 
