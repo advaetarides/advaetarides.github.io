@@ -1,0 +1,11 @@
+title: advaetaRides
+description: "Searching for the Perfect Partner — A Motorcycle Journey"
+baseurl: ""
+url: ""
+
+theme: minima
+
+# Build settings
+markdown: kramdown
+plugins:
+  - jekyll-feed

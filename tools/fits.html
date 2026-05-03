@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FITS — Find Your Motorcycle</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#0a1628; color:#e2e8f0; font-family:'Inter',sans-serif; min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:30px 20px; }
+  h1 { font-family:'Orbitron',monospace; font-size:2.4rem; font-weight:900; letter-spacing:6px; color:#fff; margin-bottom:4px; }
+  .subtitle { font-size:0.85rem; color:#64748b; letter-spacing:2px; margin-bottom:8px; }
+  .tagline { font-size:1rem; color:#22d3ee; font-style:italic; margin-bottom:35px; letter-spacing:1px; }
+
+  .main { display:flex; gap:50px; align-items:flex-start; flex-wrap:wrap; justify-content:center; max-width:1300px; width:100%; }
+  .left { display:flex; flex-direction:column; gap:24px; min-width:300px; max-width:340px; }
+  .center { display:flex; flex-direction:column; align-items:center; gap:12px; }
+  .right { min-width:320px; max-width:400px; }
+
+  .slider-group { position:relative; }
+  .slider-header { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px; }
+  .slider-letter { font-family:'Orbitron',monospace; font-size:1.3rem; font-weight:900; color:#22d3ee; }
+  .slider-label { font-size:0.8rem; color:#94a3b8; letter-spacing:1px; }
+  .slider-value { font-family:'Orbitron',monospace; font-size:0.75rem; color:#22d3ee; background:rgba(34,211,238,0.1); padding:2px 8px; border-radius:4px; border:1px solid rgba(34,211,238,0.2); }
+  .slider-ends { display:flex; justify-content:space-between; font-size:0.65rem; color:#475569; margin-top:3px; letter-spacing:1px; }
+  input[type="range"] { -webkit-appearance:none; width:100%; height:5px; background:linear-gradient(90deg,#1e3a5f,#22d3ee); border-radius:3px; outline:none; cursor:pointer; }
+  input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:20px; height:20px; background:#22d3ee; border:3px solid #0a1628; border-radius:50%; box-shadow:0 0 10px rgba(34,211,238,0.5); cursor:pointer; }
+
+  .bubble-container { position:relative; width:380px; height:380px; }
+  .bubble-ring { position:absolute; inset:0; border-radius:50%; border:1px solid rgba(30,58,95,0.6); background:radial-gradient(circle at center,rgba(34,211,238,0.02) 0%,transparent 70%); }
+  .bubble-ring-outer { position:absolute; inset:-5px; border-radius:50%; border:1px dashed rgba(34,211,238,0.15); animation:spin 50s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  @keyframes float { 0%,100%{transform:translate(0,0)} 33%{transform:translate(2px,-3px)} 66%{transform:translate(-2px,2px)} }
+  @keyframes pulse-glow { 0%,100%{box-shadow:0 0 25px rgba(34,211,238,0.3),0 0 50px rgba(34,211,238,0.1)} 50%{box-shadow:0 0 40px rgba(34,211,238,0.5),0 0 80px rgba(34,211,238,0.2)} }
+  @keyframes winner-ring { to { transform:rotate(360deg); } }
+
+  .bubble { position:absolute; border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; cursor:pointer; transition:all 0.7s cubic-bezier(0.34,1.56,0.64,1); border:1.5px solid rgba(34,211,238,0.3); background:radial-gradient(circle at 30% 30%,rgba(34,211,238,0.1),rgba(10,22,40,0.95)); animation:float 6s ease-in-out infinite; opacity:0; }
+  .bubble.visible { opacity:1; }
+  .bubble.hidden { width:0!important; height:0!important; opacity:0; border:0; }
+  .bubble.winner { border:2px solid #22d3ee; background:radial-gradient(circle at 30% 30%,rgba(34,211,238,0.2),rgba(10,22,40,0.8)); animation:float 6s ease-in-out infinite,pulse-glow 2s ease-in-out infinite; z-index:5; }
+  .bubble.winner::before { content:''; position:absolute; inset:-7px; border-radius:50%; border:2px dashed rgba(34,211,238,0.4); animation:winner-ring 8s linear infinite; }
+  .bubble.winner::after { content:'★ BEST MATCH'; position:absolute; bottom:-20px; font-family:'Orbitron',monospace; font-size:0.5rem; font-weight:700; color:#22d3ee; letter-spacing:2px; white-space:nowrap; }
+  .bubble.runner { border:1px solid rgba(34,211,238,0.2); animation:float 7s ease-in-out infinite; }
+  .bubble:hover { border-color:#22d3ee !important; z-index:10; }
+  .bubble-icon { margin-bottom:3px; opacity:0.7; font-style:normal; font-family:'Inter',sans-serif; }
+  .bubble.winner .bubble-icon { opacity:1; }
+  .bubble-name { font-family:'Orbitron',monospace; font-weight:700; color:#94a3b8; letter-spacing:1px; line-height:1.15; white-space:pre-line; }
+  .bubble.winner .bubble-name { color:#fff; }
+  .bubble-score { font-family:'Orbitron',monospace; font-size:0.6rem; color:#475569; margin-top:2px; }
+  .bubble.winner .bubble-score { color:#22d3ee; }
+
+  .legend { font-size:0.65rem; color:#475569; letter-spacing:1px; }
+  .fits-code { font-family:'Orbitron',monospace; font-size:0.9rem; letter-spacing:3px; color:#475569; }
+  .fits-code span { color:#22d3ee; font-weight:700; }
+
+  /* Profile Card */
+  .profile-card { background:rgba(30,58,95,0.2); border:1px solid #1e3a5f; border-radius:12px; padding:24px; transition:all 0.5s; min-height:420px; }
+  .profile-card.active { border-color:rgba(34,211,238,0.4); }
+  .profile-card h3 { font-family:'Orbitron',monospace; font-size:0.7rem; color:#475569; letter-spacing:3px; margin-bottom:12px; }
+  .rider-type { font-family:'Orbitron',monospace; font-size:1.2rem; font-weight:900; color:#22d3ee; margin-bottom:4px; }
+  .rider-name { font-size:0.85rem; color:#fff; font-weight:600; margin-bottom:12px; }
+  .rider-vibe { font-size:0.8rem; color:#94a3b8; line-height:1.6; margin-bottom:16px; font-style:italic; }
+  .rider-scores { display:flex; gap:8px; margin-bottom:16px; }
+  .score-chip { font-family:'Orbitron',monospace; font-size:0.65rem; padding:3px 8px; border-radius:4px; background:rgba(34,211,238,0.1); border:1px solid rgba(34,211,238,0.2); color:#22d3ee; }
+  .score-chip.high { background:rgba(34,211,238,0.2); border-color:#22d3ee; color:#fff; }
+  .picks-title { font-family:'Orbitron',monospace; font-size:0.6rem; color:#475569; letter-spacing:2px; margin-bottom:8px; }
+  .pick { display:flex; gap:8px; align-items:baseline; margin-bottom:6px; }
+  .pick-num { font-family:'Orbitron',monospace; font-size:0.65rem; color:#22d3ee; min-width:16px; }
+  .pick-name { font-size:0.8rem; color:#fff; font-weight:600; }
+  .pick-desc { font-size:0.7rem; color:#64748b; }
+  .rider-tip { margin-top:14px; font-size:0.75rem; color:#64748b; padding-top:12px; border-top:1px solid #1e3a5f; }
+  .rider-tip strong { color:#94a3b8; }
+
+  .scenarios { margin-top:35px; max-width:800px; width:100%; }
+  .scenarios h2 { font-family:'Orbitron',monospace; font-size:0.85rem; color:#475569; letter-spacing:3px; margin-bottom:14px; text-align:center; }
+  .scenario-btns { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .scenario-btn { background:transparent; border:1px solid #1e3a5f; color:#94a3b8; font-family:'Inter',sans-serif; font-size:0.75rem; padding:7px 14px; border-radius:6px; cursor:pointer; transition:all 0.2s; letter-spacing:1px; }
+  .scenario-btn:hover { border-color:#22d3ee; color:#22d3ee; background:rgba(34,211,238,0.05); }
+  .scenario-btn.active { border-color:#22d3ee; color:#fff; background:rgba(34,211,238,0.15); }
+  .footer { margin-top:35px; font-size:0.65rem; color:#334155; letter-spacing:2px; }
+</style>
+</head>
+<body>
+
+<h1>F.I.T.S.</h1>
+<div class="subtitle">FIND YOUR MOTORCYCLE — advaetaRides</div>
+<div class="tagline">"Don't just pick a bike — find your FITS."</div>
+
+<div class="main">
+  <div class="left">
+    <div class="slider-group">
+      <div class="slider-header"><div><span class="slider-letter">F</span> <span class="slider-label">FREQUENCY</span></div><div class="slider-value" id="f-val">WEEKLY</div></div>
+      <input type="range" id="f-slider" min="1" max="5" value="3" step="1">
+      <div class="slider-ends"><span>RARE</span><span>DAILY</span></div>
+    </div>
+    <div class="slider-group">
+      <div class="slider-header"><div><span class="slider-letter">I</span> <span class="slider-label">INTENSITY</span></div><div class="slider-value" id="i-val">MODERATE</div></div>
+      <input type="range" id="i-slider" min="1" max="5" value="3" step="1">
+      <div class="slider-ends"><span>RELAXED</span><span>AGGRESSIVE</span></div>
+    </div>
+    <div class="slider-group">
+      <div class="slider-header"><div><span class="slider-letter">T</span> <span class="slider-label">TERRAIN</span></div><div class="slider-value" id="t-val">MIXED</div></div>
+      <input type="range" id="t-slider" min="1" max="5" value="3" step="1">
+      <div class="slider-ends"><span>CITY</span><span>OFF-ROAD</span></div>
+    </div>
+    <div class="slider-group">
+      <div class="slider-header"><div><span class="slider-letter">S</span> <span class="slider-label">SPAN</span></div><div class="slider-value" id="s-val">1-2 HOURS</div></div>
+      <input type="range" id="s-slider" min="1" max="5" value="3" step="1">
+      <div class="slider-ends"><span>15 MIN</span><span>6+ HOURS</span></div>
+    </div>
+
+    <div style="margin-top:8px;">
+      <div class="legend">ADJUST SLIDERS TO FIND YOUR FIT</div>
+      <div class="fits-code" style="margin-top:6px;">F:<span id="fc">3</span> I:<span id="ic">3</span> T:<span id="tc">3</span> S:<span id="sc">3</span></div>
+    </div>
+  </div>
+
+  <div class="center">
+    <div class="bubble-container" id="bubble-area">
+      <div class="bubble-ring-outer"></div>
+      <div class="bubble-ring"></div>
+    </div>
+    <div class="legend">BIGGER = BETTER MATCH · CLICK A BUBBLE FOR DETAILS</div>
+  </div>
+
+  <div class="right">
+    <div class="profile-card" id="profile-card">
+      <h3>RIDER PROFILE</h3>
+      <div class="rider-type" id="p-type">THE ALL-ROUNDER</div>
+      <div class="rider-name" id="p-name">NAKED</div>
+      <div class="rider-vibe" id="p-vibe">You want a fun, versatile bike for city riding and weekend blasts. No fuss, no fairings, pure fun.</div>
+      <div class="rider-scores" id="p-scores"></div>
+      <div class="picks-title">TOP 2026 PICKS</div>
+      <div id="p-picks"></div>
+      <div class="rider-tip" id="p-tip"></div>
+    </div>
+  </div>
+</div>
+
+<div class="scenarios">
+  <h2>TRY A SCENARIO</h2>
+  <div class="scenario-btns">
+    <button class="scenario-btn" onclick="setScenario(5,2,1,1,this)">Urban Commuter</button>
+    <button class="scenario-btn" onclick="setScenario(3,3,4,5,this)">Long-Distance</button>
+    <button class="scenario-btn" onclick="setScenario(1,5,1,2,this)">Adrenaline Seeker</button>
+    <button class="scenario-btn" onclick="setScenario(4,2,2,2,this)">City Cruiser</button>
+    <button class="scenario-btn" onclick="setScenario(2,4,3,3,this)">Weekend Warrior</button>
+    <button class="scenario-btn" onclick="setScenario(5,1,5,2,this)">Daily Off-Roader</button>
+  </div>
+</div>
+
+<div class="footer">advaetaRides — THE THREE T'S + F.I.T.S.</div>
+
+<script>
+const fSlider=document.getElementById('f-slider'),iSlider=document.getElementById('i-slider'),tSlider=document.getElementById('t-slider'),sSlider=document.getElementById('s-slider');
+const fLabels=['RARELY','MONTHLY','WEEKLY','FEW/WEEK','DAILY'];
+const iLabels=['RELAXED','EASY','MODERATE','FAST','AGGRESSIVE'];
+const tLabels=['CITY','SUBURBAN','MIXED','RURAL','OFF-ROAD'];
+const sLabels=['15 MIN','30 MIN','1-2 HOURS','3-4 HOURS','6+ HOURS'];
+
+const bikes = {
+  'SUPERSPORT': {
+    f:1, i:5, t:1, s:1, label:'SUPER\nSPORT',
+    type:'THE SPEED DEMON', vibe:'You live for the track or the perfect Sunday morning curve. Comfort is secondary to razor-sharp physics.',
+    picks:[
+      {name:'BMW S 1000 RR', desc:'The tech-heavy precision instrument'},
+      {name:'Yamaha R9', desc:'The 2026 middleweight king — CP3 soul in a race suit'},
+      {name:'Ducati Panigale V4 S', desc:'Pure Italian theater and unmatched speed'}
+    ],
+    tip:'Daily Grind? No. Track Addict? Absolutely. This is a scalpel, not a Swiss army knife.'
+  },
+  'SPORT TOURER': {
+    f:3, i:4, t:2, s:5, label:'SPORT\nTOURER',
+    type:'THE HIGHWAY PILOT', vibe:'You want to cross three borders by sunset without a sore back, but you still want to lean the bike over in the twisties.',
+    picks:[
+      {name:'Triumph Tiger Sport 800', desc:'The new gold standard for triple-cylinder versatility'},
+      {name:'Yamaha Tracer 9 GT+', desc:'Loaded with radar-cruise and touring luxury'},
+      {name:'BMW F 900 XR', desc:'A lighter, punchy alternative for the fast tourer'}
+    ],
+    tip:'High I + High S = This bike. Speed AND comfort for the long haul.'
+  },
+  'HYPER NAKED': {
+    f:2, i:5, t:2, s:2, label:'HYPER\nNAKED',
+    type:'THE STREET FIGHTER', vibe:'You want the power of a Superbike but with the hooligan ergonomics of an upright handlebar.',
+    picks:[
+      {name:'KTM 990 Duke', desc:'"The Scalpel" — viciously light and torque-heavy'},
+      {name:'Suzuki GSX-S1000', desc:'Best value-for-money liter-bike engine in the world'},
+      {name:'Yamaha MT-09 SP', desc:'Pure aggression with top-tier Öhlins suspension'}
+    ],
+    tip:'High I but Low S — you ride hard but not long. Pure adrenaline in short bursts.'
+  },
+  'NAKED': {
+    f:3, i:3, t:2, s:3, label:'NAKED',
+    type:'THE ALL-ROUNDER', vibe:'You want a fun, versatile bike for city riding and weekend blasts. No fuss, no fairings, pure fun.',
+    picks:[
+      {name:'Kawasaki Z900', desc:'The benchmark middleweight naked — balanced and exciting'},
+      {name:'Yamaha MT-07', desc:'Lightweight, affordable, and endlessly fun'},
+      {name:'Triumph Trident 660', desc:'British charm, triple-cylinder smoothness'}
+    ],
+    tip:'Middle of everything = maximum flexibility. The jack-of-all-trades that actually delivers.'
+  },
+  'CRUISER': {
+    f:3, i:2, t:2, s:3, label:'CRUISER',
+    type:'THE EASY RIDER', vibe:'You ride for the feeling, not the speed. Low seat, feet forward, and the sound of a V-twin is your therapy.',
+    picks:[
+      {name:'Honda Rebel 1100', desc:'Modern cruiser perfection — DCT option for pure ease'},
+      {name:'Indian Scout', desc:'American muscle with genuine heritage'},
+      {name:'Harley-Davidson Sportster S', desc:'The icon, reinvented with Revolution Max power'}
+    ],
+    tip:'Low I means you are not chasing speed. You are chasing the FEELING of riding.'
+  },
+  'ADVENTURE': {
+    f:4, i:3, t:5, s:5, label:'ADV',
+    type:'THE GLOBAL NOMAD', vibe:'You don\'t want a toy — you want a tool that can handle a commute on Monday and a mountain pass on Friday.',
+    picks:[
+      {name:'Honda XL750 Transalp', desc:'The balanced all-rounder for every terrain'},
+      {name:'BMW R 1300 GS', desc:'The heavy-weight king of comfort and tech'},
+      {name:'Yamaha Ténéré 700', desc:'Less electronics, more dirt capability'}
+    ],
+    tip:'High T + High S = the SUV of motorcycles. Goes anywhere, lasts all day.'
+  },
+  'TOURING': {
+    f:4, i:2, t:2, s:5, label:'TOURING',
+    type:'THE GRAND TRAVELLER', vibe:'You measure rides in countries, not miles. Maximum comfort, maximum luggage, maximum distance.',
+    picks:[
+      {name:'Honda Gold Wing', desc:'The benchmark — a two-wheeled luxury car'},
+      {name:'BMW K 1600 GTL', desc:'Six-cylinder smoothness, tech-loaded grand tourer'},
+      {name:'Harley-Davidson Road Glide', desc:'American highway royalty with the batwing fairing'}
+    ],
+    tip:'High F + High S + Low I = you ride far and often, but never in a rush.'
+  },
+  'SCRAMBLER': {
+    f:3, i:2, t:3, s:2, label:'SCRAMBLER',
+    type:'THE URBAN EXPLORER', vibe:'You want a bike that looks like it has a story. City streets to dirt paths, retro style meets modern reliability.',
+    picks:[
+      {name:'Ducati Scrambler Icon', desc:'The bike that reignited the scrambler movement'},
+      {name:'Triumph Scrambler 1200', desc:'Serious off-road capability in a classic suit'},
+      {name:'Royal Enfield Scram 411', desc:'Budget-friendly adventure spirit'}
+    ],
+    tip:'Mixed T but Short S — you explore, but close to home. Style matters here.'
+  },
+  'DUAL SPORT': {
+    f:5, i:1, t:5, s:2, label:'DUAL\nSPORT',
+    type:'THE URBAN RUGGED', vibe:'You need a bike that is indestructible. Speed bumps are jumps, and maintenance should be an afterthought.',
+    picks:[
+      {name:'Honda CRF300L', desc:'The ultimate lightweight, low-maintenance daily'},
+      {name:'Suzuki DR-Z4S', desc:'The 2026 legend — now with fuel injection and modern tech'},
+      {name:'KTM 500 EXC-F', desc:'A plated dirt bike for the most technical terrain'}
+    ],
+    tip:'Max F + Max T + Min I = daily tough-guy. Built to survive, not to impress.'
+  },
+  'SCOOTER': {
+    f:5, i:1, t:1, s:1, label:'SCOOTER',
+    type:'THE COMMUTER KING', vibe:'Efficiency is your priority. Under-seat storage, no gears, and maximum weather protection for the city.',
+    picks:[
+      {name:'Honda Forza 750', desc:'The maxi-scooter that feels like a real motorcycle'},
+      {name:'BMW C 400 GT', desc:'High-end tech and comfort for the premium commuter'},
+      {name:'Honda PCX125', desc:'World best-seller — bulletproof and cheap to run'}
+    ],
+    tip:'Max F + Min everything else = pure utility. The tool, not the toy.'
+  }
+};
+
+const bubbleArea=document.getElementById('bubble-area');
+const bubbleEls={};
+const CX=190,CY=190;
+
+const bikeIcons = {
+  'SUPERSPORT':   '◈',
+  'SPORT TOURER': '◇',
+  'HYPER NAKED':  '◆',
+  'NAKED':        '○',
+  'CRUISER':      '◎',
+  'ADVENTURE':    '△',
+  'TOURING':      '▽',
+  'SCRAMBLER':    '◇',
+  'DUAL SPORT':   '▲',
+  'SCOOTER':      '□',
+};
+
+Object.keys(bikes).forEach(name=>{
+  const el=document.createElement('div');
+  el.className='bubble hidden';
+  el.innerHTML=`<div class="bubble-icon" style="font-size:1.4rem;margin-bottom:2px;">${bikeIcons[name]||''}</div><div class="bubble-name"></div><div class="bubble-score"></div>`;
+  el.addEventListener('click',()=>{
+    showProfile(name);
+    // Update sliders to this bike's ideal values
+    fSlider.value=bikes[name].f;
+    iSlider.value=bikes[name].i;
+    tSlider.value=bikes[name].t;
+    sSlider.value=bikes[name].s;
+    calculate();
+  });
+  bubbleArea.appendChild(el);
+  bubbleEls[name]=el;
+});
+
+function showProfile(name){
+  const b=bikes[name];
+  const card=document.getElementById('profile-card');
+  card.classList.add('active');
+  document.getElementById('p-type').textContent=b.type;
+  document.getElementById('p-name').textContent=name;
+  document.getElementById('p-vibe').textContent=b.vibe;
+
+  const scoresEl=document.getElementById('p-scores');
+  scoresEl.innerHTML='';
+  [{l:'F',v:b.f},{l:'I',v:b.i},{l:'T',v:b.t},{l:'S',v:b.s}].forEach(s=>{
+    const chip=document.createElement('div');
+    chip.className='score-chip'+(s.v>=4?' high':'');
+    chip.textContent=s.l+':'+s.v;
+    scoresEl.appendChild(chip);
+  });
+
+  const picksEl=document.getElementById('p-picks');
+  picksEl.innerHTML='';
+  b.picks.forEach((p,i)=>{
+    picksEl.innerHTML+=`<div class="pick"><span class="pick-num">${i+1}.</span><span class="pick-name">${p.name}</span><span class="pick-desc">— ${p.desc}</span></div>`;
+  });
+
+  document.getElementById('p-tip').innerHTML='<strong>FITS Tip:</strong> '+b.tip;
+}
+
+function scoreMatch(profile,f,i,t,s){
+  const dist=Math.abs(profile.f-f)+Math.abs(profile.i-i)+Math.abs(profile.t-t)+Math.abs(profile.s-s);
+  return Math.max(0,Math.round(100-(dist/16)*100));
+}
+
+function calculate(){
+  const f=parseInt(fSlider.value),i=parseInt(iSlider.value),t=parseInt(tSlider.value),s=parseInt(sSlider.value);
+  document.getElementById('f-val').textContent=fLabels[f-1];
+  document.getElementById('i-val').textContent=iLabels[i-1];
+  document.getElementById('t-val').textContent=tLabels[t-1];
+  document.getElementById('s-val').textContent=sLabels[s-1];
+  document.getElementById('fc').textContent=f;
+  document.getElementById('ic').textContent=i;
+  document.getElementById('tc').textContent=t;
+  document.getElementById('sc').textContent=s;
+
+  const scores={};
+  Object.keys(bikes).forEach(name=>{scores[name]=scoreMatch(bikes[name],f,i,t,s);});
+  const sorted=Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+  const bestName=sorted[0][0];
+
+  const runnerRadius=140;
+  let runnerIdx=0;
+  const runners=sorted.filter(([n,s])=>s>=35&&n!==bestName);
+  const runnerCount=Math.min(runners.length,8);
+
+  sorted.forEach(([name,score])=>{
+    const el=bubbleEls[name];
+    const nameEl=el.querySelector('.bubble-name');
+    const scoreEl=el.querySelector('.bubble-score');
+
+    if(name===bestName){
+      const size=150;
+      el.className='bubble visible winner';
+      el.style.width=size+'px'; el.style.height=size+'px';
+      el.style.left=(CX-size/2)+'px'; el.style.top=(CY-size/2)+'px';
+      nameEl.textContent=bikes[name].label; nameEl.style.fontSize='0.85rem';
+      scoreEl.textContent=score+'%';
+      const iconEl=el.querySelector('.bubble-icon');
+      if(iconEl){iconEl.style.fontSize='2.2rem';}
+      showProfile(name);
+      return;
+    }
+    if(score<35||runnerIdx>=runnerCount){el.className='bubble hidden';return;}
+
+    const angle=(runnerIdx/runnerCount)*Math.PI*2-Math.PI/2;
+    const size=45+((score-35)/65)*55;
+    const x=CX+Math.cos(angle)*runnerRadius-size/2;
+    const y=CY+Math.sin(angle)*runnerRadius-size/2;
+
+    el.className='bubble visible runner';
+    el.style.width=size+'px'; el.style.height=size+'px';
+    el.style.left=x+'px'; el.style.top=y+'px';
+    el.style.animationDelay=(runnerIdx*0.3)+'s';
+    nameEl.textContent=bikes[name].label; nameEl.style.fontSize=Math.max(0.4,size/100*0.55)+'rem';
+    scoreEl.textContent=score+'%';
+    const rIconEl=el.querySelector('.bubble-icon');
+    if(rIconEl){rIconEl.style.fontSize=Math.max(0.8,size/60)+'rem';}
+    runnerIdx++;
+  });
+}
+
+function setScenario(f,i,t,s,btn){
+  fSlider.value=f;iSlider.value=i;tSlider.value=t;sSlider.value=s;
+  document.querySelectorAll('.scenario-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  calculate();
+}
+
+fSlider.addEventListener('input',()=>{document.querySelectorAll('.scenario-btn').forEach(b=>b.classList.remove('active'));calculate();});
+iSlider.addEventListener('input',()=>{document.querySelectorAll('.scenario-btn').forEach(b=>b.classList.remove('active'));calculate();});
+tSlider.addEventListener('input',()=>{document.querySelectorAll('.scenario-btn').forEach(b=>b.classList.remove('active'));calculate();});
+sSlider.addEventListener('input',()=>{document.querySelectorAll('.scenario-btn').forEach(b=>b.classList.remove('active'));calculate();});
+calculate();
+</script>
+</body>
+</html>
