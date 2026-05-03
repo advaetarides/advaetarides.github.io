@@ -73,10 +73,11 @@
   }
 
   @media (max-width:640px) {
-    .hero { min-height: auto !important; }
-    .hero-art { position: relative !important; top: 0 !important; height: auto !important; }
+    .hero { min-height: auto !important; display: block !important; }
+    .hero-art { position: relative !important; top: 0 !important; height: auto !important; margin-top: -60px; }
     .hero-art::after { display: none; }
-    .hero-art img { max-height: none !important; mask-image: linear-gradient(180deg, black 0%, black 70%, transparent 100%); -webkit-mask-image: linear-gradient(180deg, black 0%, black 70%, transparent 100%); }
+    .hero-art img { max-height: none !important; }
+    .hero-title { margin-top: -40px; position: relative; z-index: 2; }
     .hero-title h1 { font-size: 1.5rem !important; letter-spacing: 3px !important; margin-bottom: 4px !important; }
     .hero-title .tagline { font-size: 0.65rem !important; letter-spacing: 1px !important; }
     .hero-title { padding: 0 16px !important; }
@@ -118,7 +119,7 @@
   <div class="hero-art"><img src="assets/images/hero-art.png" alt=""></div>
   <div class="hero-title">
     <h1>Advaeta Rides</h1>
-    <p class="tagline" style="font-family:'Uncial Antiqua',serif; font-size:0.95rem; color:#8B7B5E; letter-spacing:3px;">A World of Adventure & Faith in Cog & Carving</p>
+    <p class="tagline" style="font-family:'Uncial Antiqua',serif; font-size:0.95rem; letter-spacing:3px;">A World of Adventure & Faith in Cog & Carving</p>
   </div>
   <div style="flex:1;"></div>
   <div style="position:relative; z-index:2; text-align:center; padding:0 20px 30px;">
