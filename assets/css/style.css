@@ -375,7 +375,7 @@
   /* ========= DIVIDER ========= */
   .divider {
     display:flex; align-items:center; justify-content:center; gap:16px;
-    padding:50px 0; position:relative; z-index:5;
+    padding:20px 0; position:relative; z-index:5;
   }
   .divider::before, .divider::after {
     content:''; width:80px; height:1px;
