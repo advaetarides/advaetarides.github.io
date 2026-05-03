@@ -6,119 +6,65 @@
 <title>Advaeta Rides — A World of Adventure & Faith in Cog & Carving</title>
 <link rel="stylesheet" href="assets/css/style.css">
 <style>
-  /* Fixed parallax hero image */
-  .hero-art { position: relative; z-index: 0; pointer-events: none; }
-  .hero-art img {
-    width: 100%; display: block;
-    mask-image:
-      linear-gradient(180deg, transparent 0%, black 5%, black 60%, transparent 85%),
-      linear-gradient(90deg, transparent 0%, black 2%, black 98%, transparent 100%);
-    -webkit-mask-image:
-      linear-gradient(180deg, transparent 0%, black 5%, black 60%, transparent 85%),
-      linear-gradient(90deg, transparent 0%, black 2%, black 98%, transparent 100%);
-    mask-composite: intersect;
-    -webkit-mask-composite: source-in;
-  }
-  .hero-text-overlay {
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    text-align: center;
-    padding-top: 3%;
-    z-index: 2;
-    pointer-events: none;
-  }
-  .hero-text-overlay h1 {
-    font-family: var(--font-display, 'Cinzel Decorative', serif);
-    font-size: clamp(1.4rem, 4vw, 3.2rem);
-    font-weight: 900;
-    letter-spacing: clamp(3px, 0.5vw, 8px);
-    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 128 128' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E"),
-      linear-gradient(180deg, #E8C46A 0%, #C4944A 40%, #8B6914 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    filter: drop-shadow(0 3px 8px rgba(0,0,0,0.9)) drop-shadow(0 0 40px rgba(0,0,0,0.5));
-    margin-bottom: 4px;
-  }
-  .hero-text-overlay p {
-    font-family: 'Uncial Antiqua', serif;
-    font-size: clamp(0.55rem, 1.2vw, 0.95rem);
-    color: #C4A46E;
-    letter-spacing: clamp(1px, 0.3vw, 3px);
-    text-shadow: 0 1px 15px rgba(0,0,0,1), 0 2px 40px rgba(0,0,0,0.8);
-    margin: 0;
-  }
-
-  /* Content scrolls over the fixed image */
-  nav { position: relative; z-index: 10; }
   .hero {
-    position: relative; z-index: 5;
-    min-height: 80vh;
+    position: relative;
+    min-height: 70vh;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 20px 40px;
+    overflow: hidden;
   }
-  .hero-title { position: relative; z-index: 2; text-align: center; padding: 5px 20px 0; }
-  .hero-title h1 {
-    background:
-      url("data:image/svg+xml,%3Csvg viewBox='0 0 128 128' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E"),
-      linear-gradient(180deg, #E8C46A 0%, #C4944A 40%, #8B6914 100%);
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('assets/images/hero-art.png') center center / cover no-repeat;
+    opacity: 0.25;
+    mask-image: radial-gradient(ellipse 90% 80% at 50% 40%, black 20%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 40%, black 20%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .hero > * { position: relative; z-index: 1; }
+  .hero h1 {
+    font-family: var(--font-display, 'Cinzel Decorative', serif);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    letter-spacing: clamp(4px, 0.6vw, 10px);
+    background: linear-gradient(180deg, #E8C46A 0%, #C4944A 50%, #8B6914 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    filter: drop-shadow(0 3px 8px rgba(0,0,0,0.9)) drop-shadow(0 0 40px rgba(0,0,0,0.5));
+    filter: drop-shadow(0 3px 8px rgba(0,0,0,0.8));
+    margin-bottom: 12px;
   }
-  .hero-title .tagline {
-    text-shadow: 0 1px 15px rgba(0,0,0,1), 0 2px 40px rgba(0,0,0,0.8);
+  .hero .tagline {
+    font-family: 'Uncial Antiqua', serif;
+    font-size: clamp(0.7rem, 1.5vw, 1rem);
     color: #C4A46E;
-    background: linear-gradient(90deg, transparent 0%, rgba(12,12,12,0.6) 20%, rgba(12,12,12,0.7) 50%, rgba(12,12,12,0.6) 80%, transparent 100%);
-    display: inline-block;
-    padding: 6px 24px;
-    border-bottom: 1px solid rgba(196,148,74,0.2);
+    letter-spacing: clamp(2px, 0.4vw, 4px);
+    text-shadow: 0 1px 15px rgba(0,0,0,0.9);
+    margin-bottom: 40px;
   }
-
-  /* hero-fade removed — vignette ::after handles bottom fade */
-
   .hero-buttons a.btn-primary, .hero-buttons a.btn-secondary {
-    background: rgba(12,12,12,0.5);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(12,12,12,0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
   .hero-buttons a.btn-secondary { border-color: rgba(196,148,74,0.5); color: #C4944A; }
 
-  /* Everything after hero has solid bg so it covers the fixed image */
-  .content-below {
-    position: relative; z-index: 5;
-    background: #0C0C0C;
-  }
-
   @media (max-width:640px) {
-    .hero { min-height: auto !important; display: block !important; }
-    .hero-art { position: relative !important; top: 0 !important; height: auto !important; margin-top: -60px; }
-    .hero-art::after { display: none; }
-    .hero-art img { max-height: none !important; }
-    .hero-title { margin-top: -40px; position: relative; z-index: 2; }
-    .hero-title h1 { font-size: 1.5rem !important; letter-spacing: 3px !important; margin-bottom: 4px !important; }
-    .hero-title .tagline { font-size: 0.65rem !important; letter-spacing: 1px !important; }
-    .hero-title { padding: 0 16px !important; }
+    .hero { min-height: 50vh; padding: 60px 16px 30px; }
+    .hero .tagline { margin-bottom: 24px; }
     .hero-buttons a.btn-primary, .hero-buttons a.btn-secondary { padding: 10px 20px !important; font-size: 0.65rem !important; letter-spacing: 2px !important; }
-    .divider { padding: 10px 0 !important; }
-    .frameworks { padding-bottom: 40px !important; }
-  }
-
-  @media (min-width:641px) and (max-width:1024px) {
-    .hero { min-height: 50vh; }
-    .hero-art { padding-top: 40px; }
-  }
-
-  @media (min-width:1400px) {
-    .hero { min-height: 85vh; }
   }
 </style>
 </head>
 <body>
 
-<!-- teal texture behind transparent hero art -->
 <div class="fog-layer"></div>
 
 <nav>
@@ -135,25 +81,14 @@
   </div>
 </nav>
 
-<div class="hero" style="position:relative; overflow:hidden;">
-  <div class="hero-art">
-    <img src="assets/images/hero-art.png" alt="Advaeta Rides">
-    <div class="hero-text-overlay">
-      <h1>Advaeta Rides</h1>
-      <p>A World of Adventure & Faith in Cog & Carving</p>
-    </div>
+<div class="hero">
+  <h1>Advaeta Rides</h1>
+  <p class="tagline">A World of Adventure & Faith in Cog & Carving</p>
+  <div class="hero-buttons">
+    <a href="tools/" class="btn-primary">Fits Tool →</a>
+    <a href="https://www.youtube.com/@AdvaetaRides" class="btn-secondary" target="_blank">YouTube ↗</a>
   </div>
-  <div style="flex:1;"></div>
-  <div style="position:relative; z-index:2; text-align:center; padding:0 20px 10px;">
-    <div class="hero-buttons">
-      <a href="tools/" class="btn-primary">Fits Tool →</a>
-      <a href="https://www.youtube.com/@AdvaetaRides" class="btn-secondary" target="_blank">YouTube ↗</a>
-    </div>
-  </div>
-  <div class="hero-fade"></div>
 </div>
-
-<div class="content-below">
 
 <div class="divider">
   <div class="divider-diamond"></div>
@@ -169,8 +104,6 @@
     <p>Frequency. Intensity. Terrain. Span. Does this bike match how you actually live? The lifestyle fit that stops you buying based on looks.</p>
   </div>
 </div>
-
-</div><!-- /content-below -->
 
 <footer><p>Advaeta Rides — The Journey Continues</p></footer>
 
